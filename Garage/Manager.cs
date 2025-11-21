@@ -41,7 +41,7 @@ namespace Garage
 
         internal IEnumerable<Vehicle> ListVehicles()
         {
-            throw new NotImplementedException();
+            return handler.GetAllVehicles();
         }
     }
 }

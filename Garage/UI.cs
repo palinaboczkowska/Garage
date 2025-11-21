@@ -79,6 +79,13 @@ namespace Garage
         private void ListVehicles()
         {
             var vehicles = manager.ListVehicles();
+            if (!vehicles.Any())
+            {
+                Console.WriteLine("No vehicles are currently parked.");
+                return;
+            }
+
+            Console.WriteLine("\nParked vehicles:");
             foreach (var v in vehicles)
             {
                 Console.WriteLine(v.Print());
