@@ -1,2 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿// Start the console UI
+using Garage;
+
+UI ui = new UI();
+
+// Run the menu loop
+ui.Run();
+
