@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,5 +39,14 @@ namespace Garage
             return garage;
         }
 
+        internal Vehicle FindVehicle(string regNumber)
+        {
+            foreach (var v in garage)
+            {
+                if (v.RegistrationNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
+                    return v;
+            }
+            return null;
+        }
     }
 }

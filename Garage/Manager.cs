@@ -36,7 +36,10 @@ namespace Garage
 
         internal Vehicle FindVehicle(string? reg)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(reg))
+                return null;
+
+            return handler.FindVehicle(reg);
         }
 
         internal IEnumerable<Vehicle> ListVehicles()

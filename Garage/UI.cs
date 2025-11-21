@@ -58,10 +58,7 @@ namespace Garage
                         Console.WriteLine("Invalid choice, try again.");
                         break;
                 }
-
             }
-
-
         }
 
         private void FindVehicle()
@@ -90,7 +87,6 @@ namespace Garage
             {
                 Console.WriteLine(v.Print());
             }
-
         }
 
         private void RemoveVehicle()
