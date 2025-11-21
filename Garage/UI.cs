@@ -96,13 +96,13 @@ namespace Garage
 
         private void AddVehicleMenu()
         {
-            Console.WriteLine("\n--- Add Vehicle ---");
-            Console.WriteLine("1. Car");
-            Console.WriteLine("2. Airplane");
-            Console.WriteLine("3. Motorcycle");
-            Console.WriteLine("4. Bus");
-            Console.WriteLine("5. Boat");
-            Console.Write("Choose type: ");
+            Console.WriteLine("\n--- Add Vehicle ---"
+            + "\n1. Car"
+            + "\n2. Airplane"
+            + "\n3. Motorcycle"
+            + "\n4. Bus"
+            + "\n5. Boat"
+            + "\nChoose type: ");
 
             string typeChoice = Console.ReadLine();
 
@@ -110,8 +110,13 @@ namespace Garage
             string reg = Console.ReadLine();
             Console.Write("Enter color: ");
             string color = Console.ReadLine();
-            Console.Write("Enter number of wheels: ");
-            int wheels = int.Parse(Console.ReadLine());
+
+            int wheels = 0;
+            if (typeChoice != "5") //not a boat
+            { 
+                Console.Write("Enter number of wheels: ");
+                wheels = int.Parse(Console.ReadLine());
+            }
 
             Vehicle vehicle = null;
             switch (typeChoice)
@@ -139,7 +144,7 @@ namespace Garage
                 case "5":
                     Console.Write("Enter length (m): ");
                     double length = double.Parse(Console.ReadLine());
-                    vehicle = new Boat(reg, color, wheels, length);
+                    vehicle = new Boat(reg, color, length);
                     break;
                 default:
                     Console.WriteLine("Invalid type.");

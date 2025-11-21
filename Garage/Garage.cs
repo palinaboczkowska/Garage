@@ -22,8 +22,9 @@ namespace Garage
 
         public bool AddVehicle(T vehicle)
         {
-
-
+            if (count >= capacity)
+                return false; //garage is full
+            vehicles[count++] = vehicle;
             return true;
         }
 

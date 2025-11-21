@@ -17,7 +17,10 @@ namespace Garage
 
         internal string AddVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            bool success = handler.ParkVehicle(vehicle);
+            return success
+                ? $"Vehicle {vehicle.RegistrationNumber} parked successfully."
+                : $"Failed to park vehicle {vehicle.RegistrationNumber}. It may already exist or garage is full.";
         }
 
         internal Vehicle FindVehicle(string? reg)

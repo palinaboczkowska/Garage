@@ -19,10 +19,13 @@ namespace Garage
 
         public bool ParkVehicle(Vehicle vehicle) 
         {
-
-
-
-            return true;
+            // Ensure no duplicate registration number exists
+            foreach (Vehicle v in garage)
+            {
+                if (v.RegistrationNumber.Equals(vehicle.RegistrationNumber, StringComparison.OrdinalIgnoreCase))
+                    return false; //already exist
+            }
+            return garage.AddVehicle(vehicle);
         }
 
         public IEnumerable<Vehicle> GetAllVehicles()

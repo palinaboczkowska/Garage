@@ -9,8 +9,8 @@ namespace Garage.Vehicles
     internal class Boat : Vehicle
     {
         public double Length { get; set; }
-        public Boat(string regNumber, string color, int wheels, double length) 
-            : base(regNumber, color, wheels)
+        public Boat(string regNumber, string color, double length) 
+            : base(regNumber, color, 0) //boats have no wheels
         {
             Length = length;
         }
@@ -18,7 +18,7 @@ namespace Garage.Vehicles
 
         public override string Print()
         {
-            return $"Boat {RegistrationNumber}, Color: {Color}, Wheels: {NumberOfWheels}, Length: {Length} m";
+            return $"Boat {RegistrationNumber}, Color: {Color}, Length: {Length} m";
         }
     }
 }
