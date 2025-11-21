@@ -14,5 +14,11 @@ namespace Garage.Vehicles
         {
             Length = length;
         }
+
+
+        public override string Print()
+        {
+            return $"Boat {RegistrationNumber}, Color: {Color}, Wheels: {NumberOfWheels}, Length: {Length} m";
+        }
     }
 }

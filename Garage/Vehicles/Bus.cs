@@ -14,5 +14,12 @@ namespace Garage.Vehicles
         {
             NumberOfSeats = numberOfSeats;
         }
+
+
+        public override string Print()
+        {
+            return $"Bus {RegistrationNumber}, Color: {Color}, Wheels: {NumberOfWheels}, Seats: {NumberOfSeats}";
+        }
+
     }
 }

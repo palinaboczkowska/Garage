@@ -14,5 +14,11 @@ namespace Garage.Vehicles
         {
             CylinderVolume = cylinderVolume;
         }
+
+
+        public override string Print()
+        {
+            return $"Motorcycle {RegistrationNumber}, Color: {Color}, Wheels: {NumberOfWheels}, Cylinder: {CylinderVolume} cc";
+        }
     }
 }

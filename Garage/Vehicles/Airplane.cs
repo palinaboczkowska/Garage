@@ -14,5 +14,11 @@ namespace Garage.Vehicles
         {
             NumberOfEngines = engines;
         }
+
+
+        public override string Print()
+        {
+            return $"Airplane {RegistrationNumber}, Color: {Color}, Wheels: {NumberOfWheels}, Engines: {NumberOfEngines}";
+        }
     }
 }

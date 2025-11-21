@@ -14,5 +14,11 @@ namespace Garage.Vehicles
         {
             FuelType = fuelType;
         }
+
+
+        public override string Print()
+        {
+            return $"Car {RegistrationNumber}, Color: {Color}, Wheels: {NumberOfWheels}, Fuel: {FuelType}";
+        }
     }
 }
