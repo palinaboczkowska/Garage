@@ -29,11 +29,19 @@ namespace Garage
         }
 
         public bool RemoveVehicle(string regNumber)
-        { 
-        
-
-
-            return true;
+        {
+            for (int i = 0; i < count; i++) 
+            {
+                if (vehicles[i].RegistrationNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Replace removed vehicle with the last one in the array
+                    vehicles[i] = vehicles[i - 1];
+                    vehicles[count - 1] = null;
+                    count--;
+                    return true;
+                }
+            }
+            return false;
         }
 
 

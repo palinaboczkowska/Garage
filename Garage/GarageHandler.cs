@@ -28,6 +28,11 @@ namespace Garage
             return garage.AddVehicle(vehicle);
         }
 
+        public bool RemoveVehicle(string regNumber)
+        {
+            return garage.RemoveVehicle(regNumber);
+        }
+
         public IEnumerable<Vehicle> GetAllVehicles()
         {
             return garage;
