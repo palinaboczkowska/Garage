@@ -57,5 +57,6 @@ namespace Garage
                 .Select(g => (Type: g.Key, Count: g.Count()));
             return grouped;
         }
+
     }
 }
