@@ -46,5 +46,16 @@ namespace Garage
         {
             return handler.GetAllVehicles();
         }
+
+        internal IEnumerable<(string Type, int Count)> ListVehicleTypes()
+        { 
+            var vehicles = handler.GetAllVehicles().ToList();
+
+            //Group vehicles by their type
+            var grouped = vehicles
+                .GroupBy(v => v.GetType().Name)
+                .Select(g => (Type: g.Key, Count: g.Count()));
+            return grouped;
+        }
     }
 }

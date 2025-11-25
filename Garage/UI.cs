@@ -1,6 +1,7 @@
 ﻿using Garage.Vehicles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,9 @@ namespace Garage
                         ListVehicles();
                         break;
                     case '4':
+                        ListVehicleTypes();
+                        break;
+                    case '5':
                         FindVehicle();
                         break;
                     case '0':
@@ -94,6 +98,20 @@ namespace Garage
             {
                 Console.WriteLine(v.Print());
             }
+        }
+
+        private void ListVehicleTypes()
+        {
+            if (!manager.ListVehicles().Any())
+            {
+                Console.WriteLine("Garage is empty.");
+                return;
+            }
+
+            var types = manager.ListVehicleTypes();
+            Console.WriteLine("\nVehicle types in garage: ");
+            foreach (var type in types)
+                Console.WriteLine($"{type.Type}: {type.Count}");
         }
 
         private void RemoveVehicle()
@@ -177,7 +195,8 @@ namespace Garage
             + "\n1. Add vehicle"
             + "\n2. Remove vehicle"
             + "\n3. List all vehicles"
-            + "\n4. Find vehicle by registration number"
+            + "\n4. List vehicle types"
+            + "\n5. Find vehicle by registration number"
             + "\n0. Exit the application"
             + "\nYour choice: ");
         }
