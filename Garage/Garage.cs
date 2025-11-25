@@ -14,6 +14,9 @@ namespace Garage
         private int capacity;
         private int count; // How many vehicles are currently parked
 
+        public int Capacity => capacity;
+        public int Count => count;
+
 
         public Garage(int capacity) 
         {
@@ -36,7 +39,7 @@ namespace Garage
                 if (vehicles[i].RegistrationNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
                 {
                     // Replace removed vehicle with the last one in the array
-                    vehicles[i] = vehicles[i - 1];
+                    vehicles[i] = vehicles[count - 1];
                     vehicles[count - 1] = null;
                     count--;
                     return true;

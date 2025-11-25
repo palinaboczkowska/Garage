@@ -22,13 +22,14 @@ namespace Garage
 
             if (choice == "1")
             {
-                manager = new Manager(10);
+                // Create a garage with 20 spaces so that after loading demo vehicles (10),
+                // there is still room left for adding new ones
+                manager = new Manager(20); 
                 SeedData(manager);
             }
             else {
-                Console.Write("Enter garage capacity: ");
-            int capacity = int.Parse(Console.ReadLine());
-            manager = new Manager(capacity);
+                int capacity = AskForInt("Enter garage capacity: ");
+                manager = new Manager(capacity);
             }
         }
 
@@ -106,8 +107,7 @@ namespace Garage
                     break;
 
                 case "2":
-                    Console.Write("Enter number of wheels: ");
-                    int wheels = int.Parse(Console.ReadLine());
+                    int wheels = AskForInt("Enter number of wheels: ");
                     results = manager.Search(wheels: wheels);
                     break;
 
@@ -232,15 +232,24 @@ namespace Garage
 
         private void AddVehicleMenu()
         {
-            Console.WriteLine("\n--- Add Vehicle ---"
-            + "\n1. Car"
-            + "\n2. Airplane"
-            + "\n3. Motorcycle"
-            + "\n4. Bus"
-            + "\n5. Boat"
-            + "\nChoose type: ");
+            string typeChoice;
+            while (true)
+            {
+                Console.WriteLine("\n--- Add Vehicle ---"
+                    + "\n1. Car"
+                    + "\n2. Airplane"
+                    + "\n3. Motorcycle"
+                    + "\n4. Bus"
+                    + "\n5. Boat"
+                    + "\nChoose type: ");
 
-            string typeChoice = Console.ReadLine();
+                typeChoice = Console.ReadLine();
+
+                if (typeChoice == "1" || typeChoice == "2" || typeChoice == "3" || typeChoice == "4" || typeChoice == "5")
+                    break;
+
+                Console.WriteLine("Invalid type choice. Please try again.");
+            }
 
             Console.Write("Enter registration number: ");
             string reg = Console.ReadLine();
@@ -248,11 +257,8 @@ namespace Garage
             string color = Console.ReadLine();
 
             int wheels = 0;
-            if (typeChoice != "5") //not a boat
-            { 
-                Console.Write("Enter number of wheels: ");
-                wheels = int.Parse(Console.ReadLine());
-            }
+            if (typeChoice != "5") // not a boat
+                wheels = AskForInt("Enter number of wheels: ");
 
             Vehicle vehicle = null;
             switch (typeChoice)
@@ -263,23 +269,30 @@ namespace Garage
                     vehicle = new Car(reg, color, wheels, fuel);
                     break;
                 case "2":
-                    Console.Write("Enter number of engines: ");
-                    int engines = int.Parse(Console.ReadLine());
+                    int engines = AskForInt("Enter number of engines: ");
                     vehicle = new Airplane(reg, color, wheels, engines);
                     break;
                 case "3":
-                    Console.Write("Enter cylinder volume: ");
-                    int cylinder = int.Parse(Console.ReadLine());
+                    int cylinder = AskForInt("Enter cylinder volume: ");
                     vehicle = new Motorcycle(reg, color, wheels, cylinder);
                     break;
                 case "4":
-                    Console.Write("Enter number of seats: ");
-                    int seats = int.Parse(Console.ReadLine());
+                    int seats = AskForInt("Enter number of seats: ");
                     vehicle = new Bus(reg, color, wheels, seats);
                     break;
                 case "5":
-                    Console.Write("Enter length (m): ");
-                    double length = double.Parse(Console.ReadLine());
+                    double length;
+                    while (true)
+                    {
+                        Console.Write("Enter length (m): ");
+                        string input = Console.ReadLine();
+
+                        if (double.TryParse(input, out length) && length > 0)
+                            break;
+
+                        Console.WriteLine("Invalid input. Please enter a positive number (e.g., 8.5).");
+                    }
+
                     vehicle = new Boat(reg, color, length);
                     break;
                 default:
@@ -315,6 +328,21 @@ namespace Garage
             manager.AddVehicle(new Motorcycle("MOTO88", "Red", 1, 1000));
             manager.AddVehicle(new Airplane("AIR99", "White", 8, 2));
             manager.AddVehicle(new Airplane("JET007", "Silver", 10, 4));
+        }
+
+        private int AskForInt(string prompt)
+        {
+            int value;
+            while (true)
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine();
+
+                if (int.TryParse(input, out value) && value >= 0)
+                    return value;
+
+                Console.WriteLine($"Invalid input. Please enter a positive number.");
+            }
         }
 
     }
