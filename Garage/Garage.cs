@@ -14,6 +14,7 @@ namespace Garage
         private int capacity;
         private int count; // How many vehicles are currently parked
 
+
         public Garage(int capacity) 
         {
             this.capacity = capacity;
@@ -43,7 +44,6 @@ namespace Garage
             }
             return false;
         }
-
 
 
         public IEnumerator<T> GetEnumerator()

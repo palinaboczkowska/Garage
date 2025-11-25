@@ -65,6 +65,9 @@ namespace Garage
                     case '5':
                         FindVehicle();
                         break;
+                    case '6':
+                        SearchVehiclesMenu();
+                        break;
                     case '0':
                         running = false;
                         Environment.Exit(0);
@@ -75,6 +78,92 @@ namespace Garage
                 }
             }
         }
+
+        private void SearchVehiclesMenu()
+        {
+            if (!manager.ListVehicles().Any())
+            {
+                Console.WriteLine("Garage is empty.");
+                return;
+            }
+
+            Console.WriteLine("\n--- Search Vehicles ---");
+            Console.WriteLine("1. By color");
+            Console.WriteLine("2. By number of wheels");
+            Console.WriteLine("3. By type");
+            Console.WriteLine("0. Back to main menu");
+            Console.Write("Choose search option: ");
+            string choice = Console.ReadLine();
+
+            IEnumerable<Vehicle> results = Enumerable.Empty<Vehicle>();
+
+            switch (choice)
+            {
+                case "1":
+                    Console.Write("Enter color: ");
+                    string color = Console.ReadLine();
+                    results = manager.Search(color: color);
+                    break;
+
+                case "2":
+                    Console.Write("Enter number of wheels: ");
+                    int wheels = int.Parse(Console.ReadLine());
+                    results = manager.Search(wheels: wheels);
+                    break;
+
+                case "3":
+                    Type? type = PromptVehicleType();
+                    if (type == null)
+                    {
+                        Console.WriteLine("Invalid type choice.");
+                        return;
+                    }
+                    results = manager.Search(type: type);
+                    break;
+
+                case "0":
+                    return;
+
+                default:
+                    Console.WriteLine("Invalid choice.");
+                    return;
+            }
+
+            if (!results.Any())
+            {
+                Console.WriteLine("No vehicles match your search.");
+                return;
+            }
+
+            Console.WriteLine("\nSearch results:");
+            foreach (var v in results)
+            {
+                Console.WriteLine(v.Print());
+            }
+        }
+
+        //Help method
+        private Type? PromptVehicleType()
+        {
+            Console.WriteLine("\nChoose vehicle type:");
+            Console.WriteLine("1. Car");
+            Console.WriteLine("2. Bus");
+            Console.WriteLine("3. Motorcycle");
+            Console.WriteLine("4. Boat");
+            Console.WriteLine("5. Airplane");
+            Console.Write("Your choice: ");
+
+            return Console.ReadLine() switch
+            {
+                "1" => typeof(Car),
+                "2" => typeof(Bus),
+                "3" => typeof(Motorcycle),
+                "4" => typeof(Boat),
+                "5" => typeof(Airplane),
+                _ => null
+            };
+        }
+
 
         private void FindVehicle()
         {
@@ -93,6 +182,7 @@ namespace Garage
             else
                 Console.WriteLine("Vehicle not found.");
         }
+
 
 
         private void ListVehicles()
@@ -208,6 +298,7 @@ namespace Garage
             + "\n3. List all vehicles"
             + "\n4. List vehicle types"
             + "\n5. Find vehicle by registration number"
+            + "\n6. Search vehicles by properties"
             + "\n0. Exit the application"
             + "\nYour choice: ");
         }

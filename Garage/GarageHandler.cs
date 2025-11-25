@@ -48,5 +48,16 @@ namespace Garage
             }
             return null;
         }
+
+        public IEnumerable<Vehicle> SearchVehicles(string? color = null, int? wheels = null, Type? type = null)
+        {
+            return garage.Where(v =>
+                (color == null || v.Color.Equals(color, StringComparison.OrdinalIgnoreCase)) &&
+                (wheels == null || v.NumberOfWheels == wheels) &&
+                (type == null || v.GetType() == type)
+            );
+        }
+
+
     }
 }

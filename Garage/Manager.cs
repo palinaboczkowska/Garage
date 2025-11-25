@@ -42,6 +42,11 @@ namespace Garage
             return handler.FindVehicle(reg);
         }
 
+        public IEnumerable<Vehicle> Search(string? color = null, int? wheels = null, Type? type = null)
+        {
+            return handler.SearchVehicles(color, wheels, type);
+        }
+
         internal IEnumerable<Vehicle> ListVehicles()
         {
             return handler.GetAllVehicles();
