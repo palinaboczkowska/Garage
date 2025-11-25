@@ -63,6 +63,13 @@ namespace Garage
 
         private void FindVehicle()
         {
+            // Check if garage is empty before asking for input
+            if (!manager.ListVehicles().Any())
+            {
+                Console.WriteLine("Garage is empty.");
+                return;
+            }
+
             Console.Write("Enter registration number to find: ");
             string reg = Console.ReadLine();
             var vehicle = manager.FindVehicle(reg);
@@ -91,6 +98,13 @@ namespace Garage
 
         private void RemoveVehicle()
         {
+            // Check if garage is empty before asking for input
+            if (!manager.ListVehicles().Any())
+            {
+                Console.WriteLine("Garage is empty.");
+                return;
+            }
+
             Console.Write("Enter registration number to remove: ");
             string reg = Console.ReadLine();
             string result = manager.RemoveVehicle(reg);

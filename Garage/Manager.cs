@@ -34,7 +34,7 @@ namespace Garage
                 : $"Vehicle {reg} not found.";
         }
 
-        internal Vehicle FindVehicle(string? reg)
+        internal Vehicle? FindVehicle(string? reg)
         {
             if (string.IsNullOrWhiteSpace(reg))
                 return null;
