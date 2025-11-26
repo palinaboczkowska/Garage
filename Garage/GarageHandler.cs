@@ -11,7 +11,7 @@ namespace Garage
 {
     internal class GarageHandler: IHandler
     {
-        private Garage<Vehicle> garage;
+        private IGarage<Vehicle> garage;
 
         public GarageHandler(int capacity)
         { 
