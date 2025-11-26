@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    internal class Garage<T>: IEnumerable<T> where T : Vehicle
+    internal class Garage<T>: IGarage<T>, IEnumerable<T> where T : Vehicle
     {
         private T[] vehicles;
         private int capacity;

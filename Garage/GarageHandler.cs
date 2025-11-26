@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    internal class GarageHandler
+    internal class GarageHandler: IHandler
     {
         private Garage<Vehicle> garage;
 
@@ -39,7 +39,7 @@ namespace Garage
             return garage;
         }
 
-        internal Vehicle FindVehicle(string regNumber)
+        public Vehicle FindVehicle(string regNumber)
         {
             foreach (var v in garage)
             {

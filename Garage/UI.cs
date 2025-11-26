@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    internal class UI
+    internal class UI: IUI
     {
         private Manager manager;
 
@@ -24,7 +24,7 @@ namespace Garage
             {
                 // Create a garage with 20 spaces so that after loading demo vehicles (10),
                 // there is still room left for adding new ones
-                manager = new Manager(20); 
+                manager = new Manager(20);
                 SeedData(manager);
             }
             else {
@@ -33,7 +33,7 @@ namespace Garage
             }
         }
 
-        internal void Run()
+        public void Run()
         {
             bool running = true;
             while (running)
@@ -199,6 +199,9 @@ namespace Garage
             {
                 Console.WriteLine(v.Print());
             }
+
+
+            //show how many vehicles are parked and cpacity
         }
 
         private void ListVehicleTypes()

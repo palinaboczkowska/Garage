@@ -9,11 +9,12 @@ namespace Garage
 {
     internal class Manager
     {
-        private GarageHandler handler;
+        private IHandler handler;
         public Manager(int capacity)
         {
             handler = new GarageHandler(capacity);
         }
+
 
         internal string AddVehicle(Vehicle vehicle)
         {
