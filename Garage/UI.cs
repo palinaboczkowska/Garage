@@ -33,7 +33,7 @@ namespace Garage
                 }
                 else if (choice == "2")
                 {
-                    int capacity = Util.AskForInt("Enter garage capacity: ");
+                    int capacity = Util.AskForInt("Enter garage capacity: ", this);
                     manager = new Manager(capacity);
                     break;
                 }
@@ -110,7 +110,7 @@ namespace Garage
                     results = manager.Search(color: color);
                     break;
                 case "2":
-                    int wheels = Util.AskForInt("Enter number of wheels: ");
+                    int wheels = Util.AskForInt("Enter number of wheels: ", this);
                     results = manager.Search(wheels: wheels);
                     break;
                 case "3":
@@ -227,7 +227,7 @@ namespace Garage
 
             int wheels = 0;
             if (typeChoice != "5") // not a boat
-                wheels = Util.AskForInt("Enter number of wheels: ");
+                wheels = Util.AskForInt("Enter number of wheels: ", this);
 
             Vehicle vehicle = null;
             switch (typeChoice)
@@ -238,15 +238,15 @@ namespace Garage
                     vehicle = new Car(reg, color, wheels, fuel);
                     break;
                 case "2":
-                    int engines = Util.AskForInt("Enter number of engines: ");
+                    int engines = Util.AskForInt("Enter number of engines: ", this);
                     vehicle = new Airplane(reg, color, wheels, engines);
                     break;
                 case "3":
-                    int cylinder = Util.AskForInt("Enter cylinder volume: ");
+                    int cylinder = Util.AskForInt("Enter cylinder volume: ", this);
                     vehicle = new Motorcycle(reg, color, wheels, cylinder);
                     break;
                 case "4":
-                    int seats = Util.AskForInt("Enter number of seats: ");
+                    int seats = Util.AskForInt("Enter number of seats: ", this);
                     vehicle = new Bus(reg, color, wheels, seats);
                     break;
                 case "5":

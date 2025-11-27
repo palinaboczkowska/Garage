@@ -9,18 +9,18 @@ namespace Garage.Helpers
     public static class Util
     {
 
-        public static int AskForInt(string prompt)
+        public static int AskForInt(string prompt, IUI ui)
         {
             int value;
             while (true)
             {
-                Console.Write(prompt);
-                string input = Console.ReadLine();
+                ui.Print(prompt);
+                string input = ui.GetInput();
 
                 if (int.TryParse(input, out value) && value >= 0)
                     return value;
 
-                Console.WriteLine($"Invalid input. Please enter a positive number.");
+                ui.Print($"Invalid input. Please enter a positive number.");
             }
         }
 
