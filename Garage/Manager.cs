@@ -15,6 +15,10 @@ namespace Garage
             handler = new GarageHandler(capacity);
         }
 
+        internal int GetCapacity()
+        {
+            return handler.GetCapacity();
+        }
 
         internal string AddVehicle(Vehicle vehicle)
         {

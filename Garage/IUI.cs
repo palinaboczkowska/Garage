@@ -9,5 +9,8 @@ namespace Garage
     internal interface IUI
     {
         void Run();
+        void Print(string message);
+        string GetInput();
+
     }
 }

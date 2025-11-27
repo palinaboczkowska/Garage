@@ -18,6 +18,11 @@ namespace Garage
             garage = new Garage<Vehicle>(capacity);
         }
 
+        public int GetCapacity()
+        {
+            return garage.Capacity;
+        }
+
         public bool ParkVehicle(Vehicle vehicle) 
         {
             // Ensure no duplicate registration number exists

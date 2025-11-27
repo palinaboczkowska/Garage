@@ -1,4 +1,5 @@
 ﻿using Garage.Vehicles;
+using Garage.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,23 +15,34 @@ namespace Garage
 
         public UI()
         {
-            Console.WriteLine("Welcome to Garage!");
-            Console.WriteLine("Start with demo vehicles?");
-            Console.WriteLine("1. Yes");
-            Console.WriteLine("2. No");
-            string choice = Console.ReadLine();
-
-            if (choice == "1")
+            Print("Welcome to Garage!");
+            while (true) 
             {
-                // Create a garage with 20 spaces so that after loading demo vehicles (10),
-                // there is still room left for adding new ones
-                manager = new Manager(20);
-                SeedData(manager);
+                Print("Start with demo vehicles?");
+                Print("1. Yes");
+                Print("2. No");
+                string choice = GetInput();
+
+                if (choice == "1")
+                {
+                    // Create a garage with 20 spaces so that after loading demo vehicles (10),
+                    // there is still room left for adding new ones
+                    manager = new Manager(20);
+                    SeedData(manager);
+                    break;
+                }
+                else if (choice == "2")
+                {
+                    int capacity = Util.AskForInt("Enter garage capacity: ");
+                    manager = new Manager(capacity);
+                    break;
+                }
+                else
+                {
+                    Print("You must enter 1 or 2.");
+                }
             }
-            else {
-                int capacity = AskForInt("Enter garage capacity: ");
-                manager = new Manager(capacity);
-            }
+            
         }
 
         public void Run()
@@ -47,7 +59,7 @@ namespace Garage
                 catch (IndexOutOfRangeException) //If the input line is empty, we ask the users for some input.
                 {
                     Console.Clear();
-                    Console.WriteLine("Please enter some input!");
+                    Print("Please enter some input!");
                 }
                 switch (input)
                 {
@@ -74,7 +86,7 @@ namespace Garage
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.WriteLine("Invalid choice, try again.");
+                        Print("Invalid choice, try again.");
                         break;
                 }
             }
@@ -84,30 +96,30 @@ namespace Garage
         {
             if (!manager.ListVehicles().Any())
             {
-                Console.WriteLine("Garage is empty.");
+                Print("Garage is empty.");
                 return;
             }
 
-            Console.WriteLine("\n--- Search Vehicles ---");
-            Console.WriteLine("1. By color");
-            Console.WriteLine("2. By number of wheels");
-            Console.WriteLine("3. By type");
-            Console.WriteLine("0. Back to main menu");
+            Print("\n--- Search Vehicles ---");
+            Print("1. By color");
+            Print("2. By number of wheels");
+            Print("3. By type");
+            Print("0. Back to main menu");
             Console.Write("Choose search option: ");
-            string choice = Console.ReadLine();
+            string choice = GetInput();
 
             IEnumerable<Vehicle> results = Enumerable.Empty<Vehicle>();
 
             switch (choice)
             {
                 case "1":
-                    Console.Write("Enter color: ");
-                    string color = Console.ReadLine();
+                    Print("Enter color: ");
+                    string color = GetInput();
                     results = manager.Search(color: color);
                     break;
 
                 case "2":
-                    int wheels = AskForInt("Enter number of wheels: ");
+                    int wheels = Util.AskForInt("Enter number of wheels: ");
                     results = manager.Search(wheels: wheels);
                     break;
 
@@ -115,7 +127,7 @@ namespace Garage
                     Type? type = PromptVehicleType();
                     if (type == null)
                     {
-                        Console.WriteLine("Invalid type choice.");
+                        Print("Invalid type choice.");
                         return;
                     }
                     results = manager.Search(type: type);
@@ -125,35 +137,35 @@ namespace Garage
                     return;
 
                 default:
-                    Console.WriteLine("Invalid choice.");
+                    Print("Invalid choice.");
                     return;
             }
 
             if (!results.Any())
             {
-                Console.WriteLine("No vehicles match your search.");
+                Print("No vehicles match your search.");
                 return;
             }
 
-            Console.WriteLine("\nSearch results:");
+            Print("\nSearch results:");
             foreach (var v in results)
             {
-                Console.WriteLine(v.Print());
+                Print(v.Print());
             }
         }
 
         //Help method
         private Type? PromptVehicleType()
         {
-            Console.WriteLine("\nChoose vehicle type:");
-            Console.WriteLine("1. Car");
-            Console.WriteLine("2. Bus");
-            Console.WriteLine("3. Motorcycle");
-            Console.WriteLine("4. Boat");
-            Console.WriteLine("5. Airplane");
-            Console.Write("Your choice: ");
+            Print("\nChoose vehicle type:");
+            Print("1. Car");
+            Print("2. Bus");
+            Print("3. Motorcycle");
+            Print("4. Boat");
+            Print("5. Airplane");
+            Print("Your choice: ");
 
-            return Console.ReadLine() switch
+            return GetInput() switch
             {
                 "1" => typeof(Car),
                 "2" => typeof(Bus),
@@ -170,17 +182,17 @@ namespace Garage
             // Check if garage is empty before asking for input
             if (!manager.ListVehicles().Any())
             {
-                Console.WriteLine("Garage is empty.");
+                Print("Garage is empty.");
                 return;
             }
 
-            Console.Write("Enter registration number to find: ");
-            string reg = Console.ReadLine();
+            Print("Enter registration number to find: ");
+            string reg = GetInput();
             var vehicle = manager.FindVehicle(reg);
             if (vehicle != null)
-                Console.WriteLine(vehicle.Print());
+                Print(vehicle.Print());
             else
-                Console.WriteLine("Vehicle not found.");
+                Print("Vehicle not found.");
         }
 
 
@@ -190,32 +202,34 @@ namespace Garage
             var vehicles = manager.ListVehicles();
             if (!vehicles.Any())
             {
-                Console.WriteLine("No vehicles are currently parked.");
+                Print("No vehicles are currently parked.");
                 return;
             }
 
-            Console.WriteLine("\nParked vehicles:");
+            Print("\nParked vehicles:");
             foreach (var v in vehicles)
             {
-                Console.WriteLine(v.Print());
+                Print(v.Print());
             }
 
-
-            //show how many vehicles are parked and cpacity
+            //Show how many vehicles are parked and cpacity
+            int count = vehicles.Count();
+            int capacity = manager.GetCapacity();
+            Print($"\nTotal parked vehicles : {count}/{capacity}");
         }
 
         private void ListVehicleTypes()
         {
             if (!manager.ListVehicles().Any())
             {
-                Console.WriteLine("Garage is empty.");
+                Print("Garage is empty.");
                 return;
             }
 
             var types = manager.ListVehicleTypes();
-            Console.WriteLine("\nVehicle types in garage: ");
+            Print("\nVehicle types in garage: ");
             foreach (var type in types)
-                Console.WriteLine($"{type.Type}: {type.Count}");
+                Print($"{type.Type}: {type.Count}");
         }
 
         private void RemoveVehicle()
@@ -223,14 +237,14 @@ namespace Garage
             // Check if garage is empty before asking for input
             if (!manager.ListVehicles().Any())
             {
-                Console.WriteLine("Garage is empty.");
+                Print("Garage is empty.");
                 return;
             }
 
-            Console.Write("Enter registration number to remove: ");
+            Print("Enter registration number to remove: ");
             string reg = Console.ReadLine();
             string result = manager.RemoveVehicle(reg);
-            Console.WriteLine(result);
+            Print(result);
         }
 
         private void AddVehicleMenu()
@@ -238,7 +252,7 @@ namespace Garage
             string typeChoice;
             while (true)
             {
-                Console.WriteLine("\n--- Add Vehicle ---"
+                Print("\n--- Add Vehicle ---"
                     + "\n1. Car"
                     + "\n2. Airplane"
                     + "\n3. Motorcycle"
@@ -246,69 +260,69 @@ namespace Garage
                     + "\n5. Boat"
                     + "\nChoose type: ");
 
-                typeChoice = Console.ReadLine();
+                typeChoice = GetInput();
 
                 if (typeChoice == "1" || typeChoice == "2" || typeChoice == "3" || typeChoice == "4" || typeChoice == "5")
                     break;
 
-                Console.WriteLine("Invalid type choice. Please try again.");
+                Print("Invalid type choice. Please try again.");
             }
 
-            Console.Write("Enter registration number: ");
-            string reg = Console.ReadLine();
-            Console.Write("Enter color: ");
-            string color = Console.ReadLine();
+            Print("Enter registration number: ");
+            string reg = GetInput();
+            Print("Enter color: ");
+            string color = GetInput();
 
             int wheels = 0;
             if (typeChoice != "5") // not a boat
-                wheels = AskForInt("Enter number of wheels: ");
+                wheels = Util.AskForInt("Enter number of wheels: ");
 
             Vehicle vehicle = null;
             switch (typeChoice)
             {
                 case "1":
-                    Console.Write("Enter fuel type: ");
-                    string fuel = Console.ReadLine();
+                    Print("Enter fuel type: ");
+                    string fuel = GetInput();
                     vehicle = new Car(reg, color, wheels, fuel);
                     break;
                 case "2":
-                    int engines = AskForInt("Enter number of engines: ");
+                    int engines = Util.AskForInt("Enter number of engines: ");
                     vehicle = new Airplane(reg, color, wheels, engines);
                     break;
                 case "3":
-                    int cylinder = AskForInt("Enter cylinder volume: ");
+                    int cylinder = Util.AskForInt("Enter cylinder volume: ");
                     vehicle = new Motorcycle(reg, color, wheels, cylinder);
                     break;
                 case "4":
-                    int seats = AskForInt("Enter number of seats: ");
+                    int seats = Util.AskForInt("Enter number of seats: ");
                     vehicle = new Bus(reg, color, wheels, seats);
                     break;
                 case "5":
                     double length;
                     while (true)
                     {
-                        Console.Write("Enter length (m): ");
-                        string input = Console.ReadLine();
+                        Print("Enter length (m): ");
+                        string input = GetInput();
 
                         if (double.TryParse(input, out length) && length > 0)
                             break;
 
-                        Console.WriteLine("Invalid input. Please enter a positive number (e.g., 8.5).");
+                        Print("Invalid input. Please enter a positive number (e.g., 8.5).");
                     }
 
                     vehicle = new Boat(reg, color, length);
                     break;
                 default:
-                    Console.WriteLine("Invalid type.");
+                    Print("Invalid type.");
                     return;
             }
             string result = manager.AddVehicle(vehicle);
-            Console.WriteLine(result);
+            Print(result);
         }
 
         private void ShowMainMenu()
         {
-            Console.WriteLine("\nPlease navigate through the menu by inputting the number (1,2,3,4,0):"
+            Print("\nPlease navigate through the menu by inputting the number (1,2,3,4,0):"
             + "\n1. Add vehicle"
             + "\n2. Remove vehicle"
             + "\n3. List all vehicles"
@@ -333,19 +347,14 @@ namespace Garage
             manager.AddVehicle(new Airplane("JET007", "Silver", 10, 4));
         }
 
-        private int AskForInt(string prompt)
+        public void Print(string message)
         {
-            int value;
-            while (true)
-            {
-                Console.Write(prompt);
-                string input = Console.ReadLine();
+            Console.WriteLine(message);
+        }
 
-                if (int.TryParse(input, out value) && value >= 0)
-                    return value;
-
-                Console.WriteLine($"Invalid input. Please enter a positive number.");
-            }
+        public string GetInput()
+        {
+            return Console.ReadLine();
         }
 
     }
