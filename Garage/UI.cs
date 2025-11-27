@@ -28,7 +28,7 @@ namespace Garage
                     // Create a garage with 20 spaces so that after loading demo vehicles (10),
                     // there is still room left for adding new ones
                     manager = new Manager(20);
-                    SeedData(manager);
+                    DemoVehicles.SeedData(manager);
                     break;
                 }
                 else if (choice == "2")
@@ -42,7 +42,6 @@ namespace Garage
                     Print("You must enter 1 or 2.");
                 }
             }
-            
         }
 
         public void Run()
@@ -50,7 +49,7 @@ namespace Garage
             bool running = true;
             while (running)
             {
-                ShowMainMenu(); 
+                MenuHelpers.ShowMainMenu(this); 
                 char input = ' '; //Creates the character input to be used with the switch-case below.
                 try
                 {
@@ -64,7 +63,7 @@ namespace Garage
                 switch (input)
                 {
                     case '1':
-                        AddVehicleMenu();
+                        AddVehicle();
                         break;
                     case '2':
                         RemoveVehicle();
@@ -79,7 +78,7 @@ namespace Garage
                         FindVehicle();
                         break;
                     case '6':
-                        SearchVehiclesMenu();
+                        SearchVehicles();
                         break;
                     case '0':
                         running = false;
@@ -92,22 +91,15 @@ namespace Garage
             }
         }
 
-        private void SearchVehiclesMenu()
+        private void SearchVehicles()
         {
             if (!manager.ListVehicles().Any())
             {
                 Print("Garage is empty.");
                 return;
             }
-
-            Print("\n--- Search Vehicles ---");
-            Print("1. By color");
-            Print("2. By number of wheels");
-            Print("3. By type");
-            Print("0. Back to main menu");
-            Console.Write("Choose search option: ");
+            MenuHelpers.ShowSearchMenu(this);
             string choice = GetInput();
-
             IEnumerable<Vehicle> results = Enumerable.Empty<Vehicle>();
 
             switch (choice)
@@ -117,14 +109,12 @@ namespace Garage
                     string color = GetInput();
                     results = manager.Search(color: color);
                     break;
-
                 case "2":
                     int wheels = Util.AskForInt("Enter number of wheels: ");
                     results = manager.Search(wheels: wheels);
                     break;
-
                 case "3":
-                    Type? type = PromptVehicleType();
+                    Type? type = MenuHelpers.PromptVehicleType(this);
                     if (type == null)
                     {
                         Print("Invalid type choice.");
@@ -132,10 +122,8 @@ namespace Garage
                     }
                     results = manager.Search(type: type);
                     break;
-
                 case "0":
                     return;
-
                 default:
                     Print("Invalid choice.");
                     return;
@@ -149,33 +137,8 @@ namespace Garage
 
             Print("\nSearch results:");
             foreach (var v in results)
-            {
                 Print(v.Print());
-            }
         }
-
-        //Help method
-        private Type? PromptVehicleType()
-        {
-            Print("\nChoose vehicle type:");
-            Print("1. Car");
-            Print("2. Bus");
-            Print("3. Motorcycle");
-            Print("4. Boat");
-            Print("5. Airplane");
-            Print("Your choice: ");
-
-            return GetInput() switch
-            {
-                "1" => typeof(Car),
-                "2" => typeof(Bus),
-                "3" => typeof(Motorcycle),
-                "4" => typeof(Boat),
-                "5" => typeof(Airplane),
-                _ => null
-            };
-        }
-
 
         private void FindVehicle()
         {
@@ -195,8 +158,6 @@ namespace Garage
                 Print("Vehicle not found.");
         }
 
-
-
         private void ListVehicles()
         {
             var vehicles = manager.ListVehicles();
@@ -208,9 +169,7 @@ namespace Garage
 
             Print("\nParked vehicles:");
             foreach (var v in vehicles)
-            {
                 Print(v.Print());
-            }
 
             //Show how many vehicles are parked and cpacity
             int count = vehicles.Count();
@@ -242,24 +201,17 @@ namespace Garage
             }
 
             Print("Enter registration number to remove: ");
-            string reg = Console.ReadLine();
+            string reg = GetInput();
             string result = manager.RemoveVehicle(reg);
             Print(result);
         }
 
-        private void AddVehicleMenu()
+        private void AddVehicle()
         {
             string typeChoice;
             while (true)
             {
-                Print("\n--- Add Vehicle ---"
-                    + "\n1. Car"
-                    + "\n2. Airplane"
-                    + "\n3. Motorcycle"
-                    + "\n4. Bus"
-                    + "\n5. Boat"
-                    + "\nChoose type: ");
-
+                MenuHelpers.ShowAddVehicleMenu(this);
                 typeChoice = GetInput();
 
                 if (typeChoice == "1" || typeChoice == "2" || typeChoice == "3" || typeChoice == "4" || typeChoice == "5")
@@ -320,42 +272,8 @@ namespace Garage
             Print(result);
         }
 
-        private void ShowMainMenu()
-        {
-            Print("\nPlease navigate through the menu by inputting the number (1,2,3,4,0):"
-            + "\n1. Add vehicle"
-            + "\n2. Remove vehicle"
-            + "\n3. List all vehicles"
-            + "\n4. List vehicle types"
-            + "\n5. Find vehicle by registration number"
-            + "\n6. Search vehicles by properties"
-            + "\n0. Exit the application"
-            + "\nYour choice: ");
-        }
+        public void Print(string message) => Console.WriteLine(message);
 
-        private void SeedData(Manager manager)
-        {
-            manager.AddVehicle(new Car("ABC123", "Red", 4, "Petrol"));
-            manager.AddVehicle(new Car("XYZ789", "Black", 2, "Electric"));
-            manager.AddVehicle(new Bus("BUS001", "Blue", 6, 50));
-            manager.AddVehicle(new Bus("BUS002", "Yellow", 8, 60));
-            manager.AddVehicle(new Boat("BOAT42", "Green", 12.5));
-            manager.AddVehicle(new Boat("BOAT99", "White", 8.0));
-            manager.AddVehicle(new Motorcycle("MOTO77", "Black", 2, 600));
-            manager.AddVehicle(new Motorcycle("MOTO88", "Red", 1, 1000));
-            manager.AddVehicle(new Airplane("AIR99", "White", 8, 2));
-            manager.AddVehicle(new Airplane("JET007", "Silver", 10, 4));
-        }
-
-        public void Print(string message)
-        {
-            Console.WriteLine(message);
-        }
-
-        public string GetInput()
-        {
-            return Console.ReadLine();
-        }
-
+        public string GetInput() => Console.ReadLine();
     }
 }
