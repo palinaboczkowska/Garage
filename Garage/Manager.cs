@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    internal class Manager
+    public class Manager
     {
         private IHandler handler;
         public Manager(int capacity)
