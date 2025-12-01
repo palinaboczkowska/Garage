@@ -41,10 +41,10 @@ namespace Garage.Tests
             // Assert: error message printed once on invalid input
             mockUI.Verify(ui => ui.Print(It.Is<string>(s => s.Contains("Invalid input"))), Times.Once);
 
-            // Optional: verify GetInput called twice
+            // Verify GetInput called twice
             mockUI.Verify(ui => ui.GetInput(), Times.Exactly(2));
 
-            // Optional: verify prompt printed twice (once per attempt)
+            // Verify prompt printed twice (once per attempt)
             mockUI.Verify(ui => ui.Print("Enter number"), Times.Exactly(2));
         }
 
@@ -63,6 +63,22 @@ namespace Garage.Tests
         }
 
         [Fact]
+        public void AddVehicle_WhenGarageIsFull_ReturnsErrorMessage()
+        {
+            // Arrange: create a manager with capacity 1 and add a car
+            var manager = new Manager(1);
+            var car1 = new Car("CAR001", "Blue", 4, "Diesel");
+            manager.AddVehicle(car1);
+
+            // Act: try to add another car
+            var car2 = new Car("CAR002", "Red", 4, "Petrol");
+            string result = manager.AddVehicle(car2);
+
+            // Assert: confirm that the garage full message is returned
+            Assert.Equal("Failed to park vehicle CAR002. It may already exist or garage is full.", result);
+        }
+
+        [Fact]
         public void RemoveVehicle_ExistingVehicle_ReturnsSuccessMessage()
         {
             // Arrange: add a vehicle to the manager
@@ -77,7 +93,18 @@ namespace Garage.Tests
             Assert.Equal("Vehicle CAR001 removed successfully.", result);
         }
 
+        [Fact]
+        public void RemoveVehicle_NonExistingVehicle_ReturnsErrorMessage()
+        {
+            // Arrange: create a manager with capacity but no vehicles
+            var manager = new Manager(2);
 
+            // Act: try to remove a vehicle that does not exist
+            string result = manager.RemoveVehicle("CAR999");
+
+            // Assert: confirm that the error message is returned
+            Assert.Equal("Vehicle CAR999 not found.", result);
+        }
 
     }
 }
