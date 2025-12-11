@@ -24,6 +24,32 @@ namespace Garage.Helpers
             }
         }
 
+        public static string AskForString(string prompt, IUI ui)
+        {
+            while (true)
+            {
+                ui.Print(prompt);
+                var input = ui.GetInput();
+                if (!string.IsNullOrWhiteSpace(input))
+                    return input;
+
+                ui.Print("Invalid input. Please enter a non-empty value.");
+            }
+        }
+
+        public static double AskForDouble(string prompt, IUI ui)
+        {
+            while (true)
+            {
+                ui.Print(prompt);
+                var input = ui.GetInput();
+
+                if (double.TryParse(input, out double value) && value > 0)
+                    return value;
+
+                ui.Print("Invalid input. Please enter a positive number (ex 8.5).");
+            }
+        }
 
     }
 }

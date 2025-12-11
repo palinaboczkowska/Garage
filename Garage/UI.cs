@@ -21,7 +21,7 @@ namespace Garage
                 Print("Start with demo vehicles?");
                 Print("1. Yes");
                 Print("2. No");
-                string choice = GetInput();
+                string choice = Util.AskForString("Enter 1 or 2: ", this);
 
                 if (choice == "1")
                 {
@@ -99,14 +99,13 @@ namespace Garage
                 return;
             }
             MenuHelpers.ShowSearchMenu(this);
-            string choice = GetInput();
+            string choice = Util.AskForString("Enter choice: ", this);
             IEnumerable<Vehicle> results = Enumerable.Empty<Vehicle>();
 
             switch (choice)
             {
                 case "1":
-                    Print("Enter color: ");
-                    string color = GetInput();
+                    string color = Util.AskForString("Enter color: ", this);
                     results = manager.Search(color: color);
                     break;
                 case "2":
@@ -149,8 +148,7 @@ namespace Garage
                 return;
             }
 
-            Print("Enter registration number to find: ");
-            string reg = GetInput();
+            string reg = Util.AskForString("Enter registration number to find: ", this);
             var vehicle = manager.FindVehicle(reg);
             if (vehicle != null)
                 Print(vehicle.Print());
@@ -200,8 +198,7 @@ namespace Garage
                 return;
             }
 
-            Print("Enter registration number to remove: ");
-            string reg = GetInput();
+            string reg = Util.AskForString("Enter registration number to remove: ", this);
             string result = manager.RemoveVehicle(reg);
             Print(result);
         }
@@ -220,10 +217,8 @@ namespace Garage
                 Print("Invalid type choice. Please try again.");
             }
 
-            Print("Enter registration number: ");
-            string reg = GetInput();
-            Print("Enter color: ");
-            string color = GetInput();
+            string reg = Util.AskForString("Enter registration number: ", this);
+            string color = Util.AskForString("Enter color: ", this);
 
             int wheels = 0;
             if (typeChoice != "5") // not a boat
@@ -233,8 +228,7 @@ namespace Garage
             switch (typeChoice)
             {
                 case "1":
-                    Print("Enter fuel type: ");
-                    string fuel = GetInput();
+                    string fuel = Util.AskForString("Enter fuel type: ", this);
                     vehicle = new Car(reg, color, wheels, fuel);
                     break;
                 case "2":
@@ -250,18 +244,7 @@ namespace Garage
                     vehicle = new Bus(reg, color, wheels, seats);
                     break;
                 case "5":
-                    double length;
-                    while (true)
-                    {
-                        Print("Enter length (m): ");
-                        string input = GetInput();
-
-                        if (double.TryParse(input, out length) && length > 0)
-                            break;
-
-                        Print("Invalid input. Please enter a positive number (e.g., 8.5).");
-                    }
-
+                    double length = Util.AskForDouble("Enter length (m): ", this);
                     vehicle = new Boat(reg, color, length);
                     break;
                 default:
