@@ -49,38 +49,30 @@ namespace Garage
             bool running = true;
             while (running)
             {
-                MenuHelpers.ShowMainMenu(this); 
-                char input = ' '; //Creates the character input to be used with the switch-case below.
-                try
+                MenuHelpers.ShowMainMenu(this);
+
+                string choice = Util.AskForString("Your choice: ", this);
+                switch (choice)
                 {
-                    input = Console.ReadLine()![0]; //Tries to set input to the first char in an input line
-                }
-                catch (IndexOutOfRangeException) //If the input line is empty, we ask the users for some input.
-                {
-                    Console.Clear();
-                    Print("Please enter some input!");
-                }
-                switch (input)
-                {
-                    case '1':
+                    case "1":
                         AddVehicle();
                         break;
-                    case '2':
+                    case "2":
                         RemoveVehicle();
                         break;
-                    case '3':
+                    case "3":
                         ListVehicles();
                         break;
-                    case '4':
+                    case "4":
                         ListVehicleTypes();
                         break;
-                    case '5':
+                    case "5":
                         FindVehicle();
                         break;
-                    case '6':
+                    case "6":
                         SearchVehicles();
                         break;
-                    case '0':
+                    case "0":
                         running = false;
                         Environment.Exit(0);
                         break;
